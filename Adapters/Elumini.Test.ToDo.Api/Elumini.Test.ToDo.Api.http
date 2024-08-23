@@ -1,0 +1,6 @@
+@Elumini.Test.ToDo.Api_HostAddress = http://localhost:5199
+
+GET {{Elumini.Test.ToDo.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
