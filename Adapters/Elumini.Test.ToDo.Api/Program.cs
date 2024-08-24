@@ -1,9 +1,11 @@
 global using Elumini.Test.ToDo.Domain;
 
 using Elumini.Test.ToDo.Application.Ports;
+using Elumini.Test.ToDo.Application.Profiles;
 using Elumini.Test.ToDo.Application.Services;
 using Elumini.Test.ToDo.Repository;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -20,6 +22,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ToDoContext>(
     options => options.UseSqlServer(configuration.GetConnectionString("ToDoConnection")));
+
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
+
+builder.Services.AddAutoMapper(typeof(ToDoProfile));
 
 var app = builder.Build();
 

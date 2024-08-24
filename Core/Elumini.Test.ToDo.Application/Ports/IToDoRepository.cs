@@ -9,6 +9,7 @@ namespace Elumini.Test.ToDo.Application.Ports
         Task<Domain.ToDo> Get(int id);
         Task Add(Domain.ToDo toDo);
         Task Update(Domain.ToDo toDo);
+        Task<bool> Exists(int id);
         Task Delete(int id);
     }
 }

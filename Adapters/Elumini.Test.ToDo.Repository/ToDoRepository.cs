@@ -38,5 +38,9 @@ namespace Elumini.Test.ToDo.Repository
             _toDoContext.Remove(Get(id));
             _toDoContext.SaveChanges();
         }
+
+        public async Task<bool> Exists(int id)
+        => _toDoContext.ToDos.Any(x => x.Id == id);
+
     }
 }

@@ -18,8 +18,8 @@ namespace Elumini.Test.ToDo.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Domain.ToDo>>> Get()
         {
-            var result1 = await _toDoService.Get();
-            return Ok(result1);
+            var result = await _toDoService.Get();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
