@@ -1,4 +1,5 @@
 ﻿using Elumini.Test.ToDo.Application.Ports;
+using Elumini.Test.ToDo.Application.Ports.Dtos;
 using Elumini.Test.ToDo.Domain;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,28 +17,28 @@ namespace Elumini.Test.ToDo.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Domain.ToDo>>> Get()
+        public async Task<ActionResult<IEnumerable<ToDoDto>>> Get()
         {
             var result = await _toDoService.Get();
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IAsyncEnumerable<Domain.ToDo>>> Get(int id)
+        public async Task<ActionResult<IAsyncEnumerable<ToDoDto>>> Get(int id)
         {
             var result = await _toDoService.Get(id);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] Domain.ToDo toDo)
+        public async Task<ActionResult> Add([FromBody] ToDoCreateDto toDo)
         {
             await _toDoService.Add(toDo);
             return Created();
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update([FromBody]Domain.ToDo toDo)
+        public async Task<ActionResult> Update([FromBody] ToDoUpdateDto toDo)
         {
             await _toDoService.Update(toDo);
             return Ok(toDo);

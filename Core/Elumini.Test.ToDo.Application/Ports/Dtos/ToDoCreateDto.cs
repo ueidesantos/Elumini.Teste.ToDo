@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Elumini.Test.ToDo.Application.Ports.Dtos
 {
-    public class ToDoDto: IToDo
+    public class ToDoCreateDto : IToDo
     {
         public int Id { get; set; }
         public string Description { get; set; }

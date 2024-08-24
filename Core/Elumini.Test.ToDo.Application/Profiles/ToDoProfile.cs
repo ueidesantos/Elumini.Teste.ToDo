@@ -12,7 +12,22 @@ namespace Elumini.Test.ToDo.Application.Profiles
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.DtConclusion, opt => opt.MapFrom(src => src.DtConclusion))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dest => dest.DtCreated, opt => opt.MapFrom(src => src.DtCreated));
+                .ForMember(dest => dest.DtCreated, opt => opt.MapFrom(src => src.DtCreated))
+                .ReverseMap();
+
+            CreateMap<Domain.ToDo, ToDoCreateDto>()
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.DtConclusion, opt => opt.MapFrom(src => src.DtConclusion))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.DtCreated, opt => opt.MapFrom(src => src.DtCreated))
+                .ReverseMap();
+
+            CreateMap<Domain.ToDo, ToDoUpdateDto>()
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.DtConclusion, opt => opt.MapFrom(src => src.DtConclusion))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.DtCreated, opt => opt.MapFrom(src => src.DtCreated))
+                .ReverseMap();
         }
     }
 }

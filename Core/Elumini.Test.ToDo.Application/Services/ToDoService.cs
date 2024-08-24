@@ -27,10 +27,9 @@ namespace Elumini.Test.ToDo.Application.Services
 
         public async Task<IEnumerable<ToDoDto>> Get()
         {
+            await TraceMe(message: "Obtendo tarefas.");
             try
             {
-                await TraceMe(message: "Obtendo tarefas.");
-
                 var toDos = await _toDoRepository.Get();
 
                 return _mapper.Map<IEnumerable<ToDoDto>>(toDos);
@@ -43,9 +42,10 @@ namespace Elumini.Test.ToDo.Application.Services
         }
         public async Task<ToDoDto> Get(int id)
         {
+            await TraceMe(message: "Obtendo tarefa por Id.");
             try
             {
-                await TraceMe(message: "Obtendo tarefa por Id.");
+                
 
                 var toDo = await _toDoRepository.Get(id);
                 
@@ -57,27 +57,33 @@ namespace Elumini.Test.ToDo.Application.Services
                 throw;
             }
         }
-        public async Task Add(Domain.ToDo toDo)
+        public async Task Add(ToDoCreateDto toDo)
         {
             await TraceMe(message: "Adicionando tarefa.");
-            await _toDoRepository.Add(toDo);
+
+            Validate(toDo);
+
+            await _toDoRepository.Add(_mapper.Map<Domain.ToDo>(toDo));
             return;
         }
-        public async Task Update(Domain.ToDo toDo)
-        {
 
+        public async Task Update(ToDoUpdateDto toDo)
+        {
+            await TraceMe(message: "Atualizando tarefa.");
             try
             {
                 var taskfound = await _toDoRepository.Exists(toDo.Id);
                 if (!taskfound)
                 {
-                    await TraceMe(message: "Tarefa não encontrada.");
-                    throw new ArgumentNullException("Tarefa não encontrada.");
+                    _logger.LogError($"Tarefa não encontrada (Id: {toDo.Id}).");
+                    await TraceMe(message: "");
+                    throw new ArgumentNullException($"Tarefa não encontrada. (Id: {toDo.Id}))");
                 }
 
-                _logger.LogInformation("Atualizando tarefa.");
+                Validate(toDo);
+                
                 toDo.DtUpdated = DateTime.Now;
-                await _toDoRepository.Update(toDo);
+                await _toDoRepository.Update(_mapper.Map<Domain.ToDo>(toDo));
             }
             catch (Exception ex)
             {
@@ -87,9 +93,9 @@ namespace Elumini.Test.ToDo.Application.Services
         }
         public async Task Delete(int id)
         {
+            await TraceMe(message: "Excluindo tarefa.");
             try
             {
-                await TraceMe(message: "Excluindo tarefa.");
                 await _toDoRepository.Delete(id);
             }
             catch (Exception ex)
@@ -107,6 +113,19 @@ namespace Elumini.Test.ToDo.Application.Services
             {
                 _logger.LogInformation(message);
             };
+        }
+
+        private void Validate(IToDo toDo)
+        {
+            var toDoValidator = new ToDoValidator();
+            var resultValidation = toDoValidator.Validate(toDo);
+            if (!resultValidation.IsValid)
+            {
+                var exception = new ArgumentException("Dados inválidos.");
+                resultValidation.Errors.ForEach(x => exception.Data.Add(x.ErrorCode, x.ErrorMessage));
+                resultValidation.Errors.ForEach(x => _logger.LogError(x.ErrorMessage));
+                throw exception;
+            }
         }
     }
 }

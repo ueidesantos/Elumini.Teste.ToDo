@@ -11,8 +11,8 @@ namespace Elumini.Test.ToDo.Application.Ports
     {
         Task<IEnumerable<ToDoDto>> Get();
         Task<ToDoDto> Get(int id);
-        Task Add(Domain.ToDo toDo);
-        Task Update(Domain.ToDo toDo);
+        Task Add(ToDoCreateDto toDo);
+        Task Update(ToDoUpdateDto toDo);
         Task Delete(int id);
     }
 }
