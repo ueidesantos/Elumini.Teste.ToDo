@@ -12,17 +12,19 @@ namespace Elumini.Test.ToDo.Application.Services
         readonly ILogger<ToDoService> _logger;
         readonly IMapper _mapper;
         readonly IConfiguration _configuration;
-
+        readonly IToDoQueuePublisher _toDoQueuePublisher;
         public ToDoService(
             IToDoRepository toDoRepository, 
             ILogger<ToDoService> logger,
             IMapper mapper,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IToDoQueuePublisher toDoQueuePublisher)
         {
             _toDoRepository = toDoRepository;
             _logger = logger;
             _mapper = mapper;
             _configuration = configuration;
+            _toDoQueuePublisher = toDoQueuePublisher;
         }
 
         public async Task<IEnumerable<ToDoDto>> Get()
@@ -62,11 +64,10 @@ namespace Elumini.Test.ToDo.Application.Services
             await TraceMe(message: "Adicionando tarefa.");
 
             Validate(toDo);
+            await Create(toDo);
 
-            await _toDoRepository.Add(_mapper.Map<Domain.ToDo>(toDo));
             return;
         }
-
         public async Task Update(ToDoUpdateDto toDo)
         {
             await TraceMe(message: "Atualizando tarefa.");
@@ -104,7 +105,12 @@ namespace Elumini.Test.ToDo.Application.Services
                 throw;
             }
         }
-        
+
+        private async Task Create(ToDoCreateDto toDo)
+        {
+            await _toDoRepository.Add(_mapper.Map<Domain.ToDo>(toDo));
+            await _toDoQueuePublisher.Enqueue(_mapper.Map<Domain.ToDo>(toDo));
+        }
         private async Task TraceMe(string message)
         {
             var logInformation = false;
@@ -114,7 +120,6 @@ namespace Elumini.Test.ToDo.Application.Services
                 _logger.LogInformation(message);
             };
         }
-
         private void Validate(IToDo toDo)
         {
             var toDoValidator = new ToDoValidator();

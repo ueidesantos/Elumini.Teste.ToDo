@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -18,7 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Elumini.Test.ToDo.Application\Elumini.Test.ToDo.Application.csproj" />
     <ProjectReference Include="..\..\Core\Elumini.Teste.ToDo.Domain\Elumini.Test.ToDo.Domain.csproj" />
-    <ProjectReference Include="..\Elumini.Tesk.ToDo.MessageBus\Elumini.Test.ToDo.MessageBroker.csproj" />
+    <ProjectReference Include="..\Elumini.Tesk.ToDo.MessageBus\Elumini.Test.ToDo.MessageBus.csproj" />
     <ProjectReference Include="..\Elumini.Test.ToDo.Repository\Elumini.Test.ToDo.Repository.csproj" />
   </ItemGroup>
 
