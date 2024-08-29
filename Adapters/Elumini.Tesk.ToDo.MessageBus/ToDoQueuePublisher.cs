@@ -1,5 +1,4 @@
 ﻿using Elumini.Test.ToDo.Application.Ports;
-using Elumini.Test.ToDo.Domain;
 using MassTransit;
 
 

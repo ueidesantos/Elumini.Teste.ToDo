@@ -73,6 +73,7 @@ namespace Elumini.Test.ToDo.Application.Services
             await TraceMe(message: "Atualizando tarefa.");
             try
             {
+                Validate(toDo);
                 var taskfound = await _toDoRepository.Exists(toDo.Id);
                 if (!taskfound)
                 {
@@ -80,8 +81,6 @@ namespace Elumini.Test.ToDo.Application.Services
                     await TraceMe(message: "");
                     throw new ArgumentNullException($"Tarefa não encontrada. (Id: {toDo.Id}))");
                 }
-
-                Validate(toDo);
                 
                 toDo.DtUpdated = DateTime.Now;
                 await _toDoRepository.Update(_mapper.Map<Domain.ToDo>(toDo));
@@ -108,6 +107,7 @@ namespace Elumini.Test.ToDo.Application.Services
 
         private async Task Create(ToDoCreateDto toDo)
         {
+            toDo.DtCreated = DateTime.Now;
             await _toDoRepository.Add(_mapper.Map<Domain.ToDo>(toDo));
             await _toDoQueuePublisher.Enqueue(_mapper.Map<Domain.ToDo>(toDo));
         }

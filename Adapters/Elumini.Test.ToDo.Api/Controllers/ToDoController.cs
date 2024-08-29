@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Elumini.Test.ToDo.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ToDoController : Controller
     {
         readonly IToDoService _toDoService;
