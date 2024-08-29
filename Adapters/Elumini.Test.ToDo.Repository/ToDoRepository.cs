@@ -1,7 +1,6 @@
 ﻿using Elumini.Test.ToDo.Application.Ports;
-using Elumini.Test.ToDo.Domain;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace Elumini.Test.ToDo.Repository
 {
@@ -19,28 +18,28 @@ namespace Elumini.Test.ToDo.Repository
 
 
         public async Task<Domain.ToDo?> Get(int id)
-            => _toDoContext.ToDos.Find(id);
+            => await _toDoContext.ToDos.FindAsync(id);
 
         public async Task Add(Domain.ToDo toDo)
         {
             _toDoContext.Add(toDo);
-            _toDoContext.SaveChanges();
+            await _toDoContext.SaveChangesAsync();
 
         }
 
         public async Task Update(Domain.ToDo toDo)
         {
             _toDoContext.Update(toDo);
-            _toDoContext.SaveChanges();
+            await _toDoContext.SaveChangesAsync();
         }
         public async Task Delete(int id)
         {
             _toDoContext.Remove(Get(id));
-            _toDoContext.SaveChanges();
+            await _toDoContext.SaveChangesAsync();
         }
 
         public async Task<bool> Exists(int id)
-        => _toDoContext.ToDos.Any(x => x.Id == id);
+        => await _toDoContext.ToDos.AnyAsync(x => x.Id == id);
 
     }
 }

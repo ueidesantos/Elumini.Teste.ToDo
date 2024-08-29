@@ -1,7 +1,4 @@
 ﻿using MassTransit;
-using Serilog;
-using Elumini.Test.ToDo.Domain;
-using Microsoft.Extensions.Logging;
 
 namespace Elumini.Test.ToDo.Worker
 {
